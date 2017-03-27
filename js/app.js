@@ -1,4 +1,8 @@
-// Enemies our player must avoid
+Object.prototype.reset = function(){
+  this.x = 200;
+  this.y = 375;
+}
+
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -8,17 +12,18 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.speed = 200;
+    this.speed = speedGen();
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    if (this.x > 500) {
+    if (this.x < 500) {
       this.x += this.speed * dt;
     }
     else {
       this.x = -50;
+      this.speed = speedGen();
     }
 };
 
@@ -35,17 +40,20 @@ var Player = function(x, y) {
 };
 // This class requires an update(), render() and
 Player.prototype.update = function () {
-  if (this.movement === 'up') {
-    this.y = this.y - 50;
+  if (this.movement === 'up' && this.y >= 20) {
+    this.y = this.y - 40;
   }
-  else if (this.movement === 'down') {
-    this.y = this.y + 50;
+  else if (this.movement === 'down' && this.y < 375) {
+    this.y = this.y + 40;
   }
-  else if (this.movement === 'right'){
-    this.x = this.x + 50;
+  else if (this.movement === 'right' && this.x < 400){
+    this.x = this.x + 40;
   }
-  else if (this.movement === 'left'){
-    this.x = this.x - 50;
+  else if (this.movement === 'left' && this.x > 10){
+    this.x = this.x - 40;
+  }
+  else if(this.y <= 20){
+    this.reset();
   }
   this.movement = null;
 }
@@ -59,13 +67,23 @@ Player.prototype.handleInput = function (e) {
   this.movement = e;
 }
 
+//Function to produce random speeds for the enemies.
+function speedGen() {
+return Math.floor(Math.random() * 600) + 200;
+};
+
+
+
 // Now instantiate your objects.
 var enemy1 = new Enemy(-90, 60);
+var enemy2 = new Enemy(-90, 140);
+var enemy3 = new Enemy(-90, 220);
 // Place all enemy objects in an array called allEnemies
- var allEnemies = [enemy1];
+ var allEnemies = [enemy1, enemy2, enemy3];
 // Place the player object in a variable called player
 var player = new Player(200,375);
 
+//Check for collision
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

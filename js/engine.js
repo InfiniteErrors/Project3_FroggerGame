@@ -159,7 +159,9 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+      console.log('yay!');
+      this.x = 200;
+      this.y = 375;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
