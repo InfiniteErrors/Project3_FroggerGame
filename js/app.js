@@ -33,6 +33,8 @@ Enemy.prototype.render = function() {
 };
 
 // Now write your own player class
+var playerScore = 1;
+
 var Player = function(x, y) {
   this.sprite = 'images/char-cat-girl.png';
   this.x = x;
@@ -54,6 +56,7 @@ Player.prototype.update = function () {
   }
   else if(this.y <= 20){
     this.reset();
+    playerScore++
   }
   this.movement = null;
 }
