@@ -95,6 +95,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        orangeGem.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -152,6 +153,7 @@ var Engine = (function(global) {
         });
 
         player.render();
+        orangeGem.render();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -159,9 +161,6 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-      console.log('yay!');
-      this.x = 200;
-      this.y = 375;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -174,7 +173,8 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/char-cat-girl.png'
+        'images/char-cat-girl.png',
+        'images/Gem_Orange.png'
     ]);
     Resources.onReady(init);
 

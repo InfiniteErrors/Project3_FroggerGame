@@ -3,6 +3,10 @@ Object.prototype.reset = function(){
   this.y = 375;
 }
 
+Object.prototype.collection = function() {
+  this.x = -100;
+}
+
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -25,6 +29,15 @@ Enemy.prototype.update = function(dt) {
       this.x = -50;
       this.speed = speedGen();
     }
+    if (player.x <= this.x + 25 && player.x >= this.x - 25) {
+      if (player.y <= this.y +25 && player.y >= this.y - 25){
+        player.reset();
+        if (playerScore > 0) {
+          playerScore--;
+          console.log(playerScore);
+        }
+      }
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -32,7 +45,9 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
+// Below is the player class, it handles the location, movement and of course rendering of the player.
+
+// Player's overall score.
 var playerScore = 1;
 
 var Player = function(x, y) {
@@ -43,20 +58,21 @@ var Player = function(x, y) {
 // This class requires an update(), render() and
 Player.prototype.update = function () {
   if (this.movement === 'up' && this.y >= 20) {
-    this.y = this.y - 40;
+    this.y = this.y - 80;
   }
   else if (this.movement === 'down' && this.y < 375) {
-    this.y = this.y + 40;
+    this.y = this.y + 80;
   }
   else if (this.movement === 'right' && this.x < 400){
-    this.x = this.x + 40;
+    this.x = this.x + 100;
   }
   else if (this.movement === 'left' && this.x > 10){
-    this.x = this.x - 40;
+    this.x = this.x - 100;
   }
   else if(this.y <= 20){
     this.reset();
     playerScore++
+    console.log(playerScore);
   }
   this.movement = null;
 }
@@ -70,9 +86,30 @@ Player.prototype.handleInput = function (e) {
   this.movement = e;
 }
 
+var gotGem = false;
+
+var Gem = function(x, y) {
+  this.sprite = 'images/Gem_Orange.png';
+  this.x = x;
+  this.y = y;
+};
+
+Gem.prototype.update = function() {
+  if (player.x <= this.x + 25 && player.x >= this.x - 25) {
+    if (player.y <= this.y + 25 && player.y >= this.y - 25){
+      this.collection();
+      gotGem = true;
+    }
+  }
+}
+
+Gem.prototype.render = function () {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
 //Function to produce random speeds for the enemies.
 function speedGen() {
-return Math.floor(Math.random() * 600) + 200;
+return Math.floor(Math.random() * 550) + 150;
 };
 
 
@@ -86,7 +123,8 @@ var enemy3 = new Enemy(-90, 220);
 // Place the player object in a variable called player
 var player = new Player(200,375);
 
-//Check for collision
+//Add a gem to the board.
+var orangeGem = new Gem(302, 140);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
