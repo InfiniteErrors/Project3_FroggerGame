@@ -4,10 +4,10 @@ body {
 }
 
 .score {
-  color: red;
-  text-align: center;
+    color: red;
+    text-align: center;
 }
 
 .center-content {
-  display: inline;
+    display: inline;
 }
