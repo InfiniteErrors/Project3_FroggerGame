@@ -101,6 +101,7 @@ Gem.prototype.update = function() {
         if (player.y <= this.y + 25 && player.y >= this.y - 25) {
             this.collection();
             gotGem = true;
+            $('.score').append('You got the Gem! Nice work.');
         }
     }
 }
@@ -108,6 +109,8 @@ Gem.prototype.update = function() {
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
+
+
 
 // Instantiate my objects.
 var enemy1 = new Enemy(-90, 60);
