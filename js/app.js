@@ -1,12 +1,18 @@
-Object.prototype.reset = function(){
-  this.x = 200;
-  this.y = 375;
+Object.prototype.reset = function() {
+    this.x = 200;
+    this.y = 375;
 }
 
 Object.prototype.collection = function() {
-  this.x = -100;
+    this.x = -100;
 }
 
+//Function to produce random speeds for the enemies.
+function speedGen() {
+    return Math.floor(Math.random() * 550) + 150;
+};
+
+//Creating an Enemy class and all of its movements, hot detection, speeds.
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
@@ -23,20 +29,19 @@ var Enemy = function(x, y) {
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     if (this.x < 500) {
-      this.x += this.speed * dt;
-    }
-    else {
-      this.x = -50;
-      this.speed = speedGen();
+        this.x += this.speed * dt;
+    } else {
+        this.x = -50;
+        this.speed = speedGen();
     }
     if (player.x <= this.x + 25 && player.x >= this.x - 25) {
-      if (player.y <= this.y +25 && player.y >= this.y - 25){
-        player.reset();
-        if (playerScore > 0) {
-          playerScore--;
-          console.log(playerScore);
+        if (player.y <= this.y + 25 && player.y >= this.y - 25) {
+            player.reset();
+            if (playerScore > 0) {
+                playerScore--;
+                console.log(playerScore);
+            }
         }
-      }
     }
 };
 
@@ -51,79 +56,69 @@ Enemy.prototype.render = function() {
 var playerScore = 1;
 
 var Player = function(x, y) {
-  this.sprite = 'images/char-cat-girl.png';
-  this.x = x;
-  this.y = y;
+    this.sprite = 'images/char-cat-girl.png';
+    this.x = x;
+    this.y = y;
 };
-// This class requires an update(), render() and
-Player.prototype.update = function () {
-  if (this.movement === 'up' && this.y >= 20) {
-    this.y = this.y - 80;
-  }
-  else if (this.movement === 'down' && this.y < 375) {
-    this.y = this.y + 80;
-  }
-  else if (this.movement === 'right' && this.x < 400){
-    this.x = this.x + 100;
-  }
-  else if (this.movement === 'left' && this.x > 10){
-    this.x = this.x - 100;
-  }
-  else if(this.y <= 20){
-    this.reset();
-    playerScore++
-    console.log(playerScore);
-  }
-  this.movement = null;
+//This update function chnages the players location based on which keys were pressed.
+Player.prototype.update = function() {
+    if (this.movement === 'up' && this.y >= 20) {
+        this.y = this.y - 80;
+    } else if (this.movement === 'down' && this.y < 375) {
+        this.y = this.y + 80;
+    } else if (this.movement === 'right' && this.x < 400) {
+        this.x = this.x + 100;
+    } else if (this.movement === 'left' && this.x > 10) {
+        this.x = this.x - 100;
+    } else if (this.y <= 20) {
+        this.reset();
+        playerScore++
+        console.log(playerScore);
+    }
+    this.movement = null;
 }
 
-Player.prototype.render = function () {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 // a handleInput() method.
-Player.prototype.handleInput = function (e) {
-  var movement = null;
-  this.movement = e;
+Player.prototype.handleInput = function(e) {
+    var movement = null;
+    this.movement = e;
 }
 
-var gotGem = false;
+// Gem Class below, just a simple Class that moves off the screen and confirms that it was gotten by the player.
 
+var gotGem = false;
 var Gem = function(x, y) {
-  this.sprite = 'images/Gem_Orange.png';
-  this.x = x;
-  this.y = y;
+    this.sprite = 'images/Gem_Orange.png';
+    this.x = x;
+    this.y = y;
 };
 
 Gem.prototype.update = function() {
-  if (player.x <= this.x + 25 && player.x >= this.x - 25) {
-    if (player.y <= this.y + 25 && player.y >= this.y - 25){
-      this.collection();
-      gotGem = true;
+    if (player.x <= this.x + 25 && player.x >= this.x - 25) {
+        if (player.y <= this.y + 25 && player.y >= this.y - 25) {
+            this.collection();
+            gotGem = true;
+        }
     }
-  }
 }
 
-Gem.prototype.render = function () {
-  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Function to produce random speeds for the enemies.
-function speedGen() {
-return Math.floor(Math.random() * 550) + 150;
-};
-
-
-
-// Now instantiate your objects.
+// Instantiate my objects.
 var enemy1 = new Enemy(-90, 60);
 var enemy2 = new Enemy(-90, 140);
 var enemy3 = new Enemy(-90, 220);
-// Place all enemy objects in an array called allEnemies
- var allEnemies = [enemy1, enemy2, enemy3];
-// Place the player object in a variable called player
-var player = new Player(200,375);
+// Enemies are being placed on the canvas here.
+var allEnemies = [enemy1, enemy2, enemy3];
+// One new player is created.
+var player = new Player(200, 375);
 
-//Add a gem to the board.
+//Add an orange gem to the board.
 var orangeGem = new Gem(302, 140);
 
 // This listens for key presses and sends the keys to your
