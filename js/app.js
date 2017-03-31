@@ -1,16 +1,7 @@
-Object.prototype.reset = function() {
-    this.x = 200;
-    this.y = 375;
-}
-
-Object.prototype.collection = function() {
-    this.x = -100;
-}
-
 //Function to produce random speeds for the enemies.
 function speedGen() {
     return Math.floor(Math.random() * 550) + 150;
-};
+}
 
 //Creating an Enemy class and all of its movements, hot detection, speeds.
 var Enemy = function(x, y) {
@@ -52,6 +43,12 @@ Enemy.prototype.render = function() {
 
 // Below is the player class, it handles the location, movement and of course rendering of the player.
 
+// Reset function for the Player
+Object.prototype.reset = function() {
+    this.x = 200;
+    this.y = 375;
+};
+
 // Player's overall score.
 var playerScore = 0;
 
@@ -71,12 +68,12 @@ Player.prototype.update = function() {
     } else if (this.movement === 'left' && this.x > 10) {
         this.x = this.x - 100;
     } else if (this.y <= 20) {
-        playerScore++
+        playerScore++;
         $(".num").text('Score: ' + playerScore);
         this.reset();
     }
     this.movement = null;
-}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -85,9 +82,14 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(e) {
     var movement = null;
     this.movement = e;
-}
+};
 
 // Gem Class below, just a simple Class that moves off the screen and confirms that it was gotten by the player.
+
+// This gets the Gem off the screen after the player collects it.
+Object.prototype.collection = function() {
+    this.x = -100;
+};
 
 var gotGem = false;
 var Gem = function(x, y) {
@@ -104,8 +106,7 @@ Gem.prototype.update = function() {
             $('.gem').append('You got the Gem! Nice work.');
         }
     }
-}
-
+};
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
