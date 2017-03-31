@@ -39,7 +39,7 @@ Enemy.prototype.update = function(dt) {
             player.reset();
             if (playerScore > 0) {
                 playerScore--;
-                console.log(playerScore);
+                $(".num").text('Score: ' + playerScore);
             }
         }
     }
@@ -53,7 +53,7 @@ Enemy.prototype.render = function() {
 // Below is the player class, it handles the location, movement and of course rendering of the player.
 
 // Player's overall score.
-var playerScore = 1;
+var playerScore = 0;
 
 var Player = function(x, y) {
     this.sprite = 'images/char-cat-girl.png';
@@ -71,9 +71,9 @@ Player.prototype.update = function() {
     } else if (this.movement === 'left' && this.x > 10) {
         this.x = this.x - 100;
     } else if (this.y <= 20) {
-        this.reset();
         playerScore++
-        console.log(playerScore);
+        $(".num").text('Score: ' + playerScore);
+        this.reset();
     }
     this.movement = null;
 }
@@ -101,7 +101,7 @@ Gem.prototype.update = function() {
         if (player.y <= this.y + 25 && player.y >= this.y - 25) {
             this.collection();
             gotGem = true;
-            $('.score').append('You got the Gem! Nice work.');
+            $('.gem').append('You got the Gem! Nice work.');
         }
     }
 }
