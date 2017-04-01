@@ -114,11 +114,11 @@ Gem.prototype.render = function() {
 
 
 // Instantiate my objects.
-var enemy1 = new Enemy(-90, 60);
-var enemy2 = new Enemy(-90, 140);
-var enemy3 = new Enemy(-90, 220);
+var enemyTop = new Enemy(-90, 60);
+var enemyMiddle= new Enemy(-90, 140);
+var enemyLower = new Enemy(-90, 220);
 // Enemies are being placed on the canvas here.
-var allEnemies = [enemy1, enemy2, enemy3];
+var allEnemies = [enemyTop, enemyMiddle, enemyLower];
 // One new player is created.
 var player = new Player(200, 375);
 
