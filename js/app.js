@@ -1,3 +1,5 @@
+'use strict';
+
 //Function to produce random speeds for the enemies.
 function speedGen() {
     return Math.floor(Math.random() * 550) + 150;
@@ -28,9 +30,9 @@ Enemy.prototype.update = function(dt) {
     if (player.x <= this.x + 25 && player.x >= this.x - 25) {
         if (player.y <= this.y + 25 && player.y >= this.y - 25) {
             player.reset();
-            if (playerScore > 0) {
-                playerScore--;
-                $(".num").text('Score: ' + playerScore);
+            if (player.playerScore > 0) {
+                player.playerScore--;
+                $(".num").text('Score: ' + player.playerScore);
             }
         }
     }
@@ -43,19 +45,14 @@ Enemy.prototype.render = function() {
 
 // Below is the player class, it handles the location, movement and of course rendering of the player.
 
-// Reset function for the Player
-Object.prototype.reset = function() {
-    this.x = 200;
-    this.y = 375;
-};
-
 // Player's overall score.
-var playerScore = 0;
 
-var Player = function(x, y) {
+
+var Player = function(x, y, playerScore) {
     this.sprite = 'images/char-cat-girl.png';
     this.x = x;
     this.y = y;
+    this.playerScore = playerScore;
 };
 //This update function chnages the players location based on which keys were pressed.
 Player.prototype.update = function() {
@@ -68,8 +65,8 @@ Player.prototype.update = function() {
     } else if (this.movement === 'left' && this.x > 10) {
         this.x = this.x - 100;
     } else if (this.y <= 20) {
-        playerScore++;
-        $(".num").text('Score: ' + playerScore);
+        this.playerScore++;
+        $(".num").text('Score: ' + this.playerScore);
         this.reset();
     }
     this.movement = null;
@@ -83,32 +80,36 @@ Player.prototype.handleInput = function(e) {
     var movement = null;
     this.movement = e;
 };
+//Player reset function that moves the player back into position after win or fail.
+Player.prototype.reset = function() {
+  this.x = 200;
+  this.y = 375;
+}
 
 // Gem Class below, just a simple Class that moves off the screen and confirms that it was gotten by the player.
 
-// This gets the Gem off the screen after the player collects it.
-Object.prototype.collection = function() {
-    this.x = -100;
-};
-
-var gotGem = false;
-var Gem = function(x, y) {
+var Gem = function(x, y, gotGem) {
     this.sprite = 'images/Gem_Orange.png';
     this.x = x;
     this.y = y;
+    this.gotGem = gotGem;
 };
 
 Gem.prototype.update = function() {
     if (player.x <= this.x + 25 && player.x >= this.x - 25) {
         if (player.y <= this.y + 25 && player.y >= this.y - 25) {
             this.collection();
-            gotGem = true;
+            this.gotGem = true;
             $('.gem').append('You got the Gem! Nice work.');
         }
     }
 };
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Gem.prototype.collection = function() {
+    this.x = -100;
 };
 
 
@@ -120,10 +121,10 @@ var enemyLower = new Enemy(-90, 220);
 // Enemies are being placed on the canvas here.
 var allEnemies = [enemyTop, enemyMiddle, enemyLower];
 // One new player is created.
-var player = new Player(200, 375);
+var player = new Player(200, 375, 0);
 
 //Add an orange gem to the board.
-var orangeGem = new Gem(302, 140);
+var orangeGem = new Gem(302, 140, false);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
