@@ -48,11 +48,11 @@ Enemy.prototype.render = function() {
 // Player's overall score.
 
 
-var Player = function(x, y, playerScore) {
+var Player = function(x, y) {
     this.sprite = 'images/char-cat-girl.png';
     this.x = x;
     this.y = y;
-    this.playerScore = playerScore;
+    this.playerScore = 0;
 };
 //This update function chnages the players location based on which keys were pressed.
 Player.prototype.update = function() {
@@ -121,7 +121,7 @@ var enemyLower = new Enemy(-90, 220);
 // Enemies are being placed on the canvas here.
 var allEnemies = [enemyTop, enemyMiddle, enemyLower];
 // One new player is created.
-var player = new Player(200, 375, 0);
+var player = new Player(200, 375);
 
 //Add an orange gem to the board.
 var orangeGem = new Gem(302, 140, false);
